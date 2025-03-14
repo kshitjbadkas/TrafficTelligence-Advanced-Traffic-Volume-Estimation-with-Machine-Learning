@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrafficTelligence - Traffic Prediction</title>
+    <style>
+        /* Global Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='traffic.jpg') }}") no-repeat center center/cover;
+            text-align: center;
+            color: white;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Container Styling */
+        .container {
+            width: 90%;
+            max-width: 450px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.6);
+        }
+
+        /* Header Styling */
+        h2 {
+            color: #ffc107;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        /* Form Elements */
+        label {
+            font-weight: bold;
+            display: block;
+            text-align: left;
+            margin: 10px 0 5px;
+            color: #ddd;
+        }
+
+        input,
+        select,
+        button {
+            width: 90%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        /* Input and Select Fields */
+        input,
+        select {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        /* Button - Traffic Green Theme */
+        button {
+            background: linear-gradient(45deg, #28a745, #218838);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 14px;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #218838, #1e7e34);
+        }
+
+        /* Prediction Result */
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #ffc107;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>🚦 Traffic Volume Prediction 🚗</h2>
+        <form action="/predict" method="post">
+            <label for="hour">⏰ Hour (0-23):</label>
+            <input type="number" id="hour" name="hour" min="0" max="23" value="{{ hour }}" required>
+
+            <label for="temp">🌡️ Temperature (Kelvin):</label>
+            <input type="number" id="temp" name="temp" step="0.1" value="{{ temp }}" required>
+
+            <label for="weather">🌦️ Weather Condition:</label>
+            <select id="weather" name="weather" required>
+                <option value="Clear" {% if weather=="Clear" %}selected{% endif %}>Clear</option>
+                <option value="Clouds" {% if weather=="Clouds" %}selected{% endif %}>Clouds</option>
+                <option value="Rain" {% if weather=="Rain" %}selected{% endif %}>Rain</option>
+                <option value="Snow" {% if weather=="Snow" %}selected{% endif %}>Snow</option>
+                <option value="Fog" {% if weather=="Fog" %}selected{% endif %}>Fog</option>
+            </select>
+
+            <button type="submit">🚗 Predict Traffic</button>
+        </form>
+
+        {% if prediction_text %}
+        <p class="result">{{ prediction_text }}</p>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>
